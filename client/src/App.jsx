@@ -4,6 +4,9 @@ import Welcome from "./components/Welcome.jsx";
 import Accounts from "./components/Accounts.jsx";
 import SendEther from "./components/SendEther.jsx";
 import "./App.css";
+import {BrowserRouter,Routes,Route} from 'react-router-dom'
+import Logs from "./components/Logs";
+import Home from './components/Home'
 
 const App = () => {
   const [web3, setWeb3] = useState(null);
@@ -78,6 +81,14 @@ const App = () => {
       });
   };
   return (
+    <>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home/>}/>
+        <Route path="/logs" element={<Logs/>}/>
+      </Routes>
+    </BrowserRouter>
+
     <div className="Flex">
       <div className="welMargin">
         <Welcome />
@@ -126,6 +137,7 @@ const App = () => {
       </div>
       </div>
     </div>
+    </>
   );
 };
 export default App;
