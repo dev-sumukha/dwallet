@@ -1,9 +1,10 @@
 import React from 'react'
+import Log from './Log'
 
-function Logs() {
+function Logs({list}) {
   return (
     <>
-    
+      {list.map((e)=><Log e={e}/>)}
     </>
   )
 }

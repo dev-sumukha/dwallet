@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Web3 from "web3";
-import Welcome from "./components/Welcome.jsx";
-import Accounts from "./components/Accounts.jsx";
-import SendEther from "./components/SendEther.jsx";
-import "./App.css";
-import './components/css/Home.css';
+import Welcome from "./Welcome.jsx";
+// import Accounts from "./components/Accounts.jsx";
+// import SendEther from "./components/SendEther.jsx";
+// import "./App.css";
 import {BrowserRouter,Routes,Route} from 'react-router-dom'
-import Logs from "./components/Logs";
-import Home from './components/Home'
-import Main from './components/Main'
-import Header from "./components/Header";
+import Logs from "./Logs";
+import Home from './Home'
 
-const App = () => {
+const Main = ({addTransaction}) => {
   const [web3, setWeb3] = useState(null);
   const [account, setAccount] = useState(null); //child to parent transfer
   // const [account, setAccount] = useState(null);
@@ -19,7 +16,6 @@ const App = () => {
   const [provider, setProvider] = useState(null);
   const [receipt, setReceipt] = useState({});
   const [toggle, setToggle] = useState(false);
-  const [list,setList] = useState([]);
 
   const saveAccountAddress = (accountAddress) => {
     setAccount(accountAddress);
@@ -83,25 +79,61 @@ const App = () => {
         setReceipt(receipt);
         setToggle(true);
       });
+      addTransaction(receipt);
   };
-
-  const addTransaction = (element)=>{
-    let res = [...list,element];
-    setList(res);
-    console.log(JSON.stringify(element,["transactionHash","blockHash","blockNumber","gasUsed"],2));
-  }
   return (
     <>
-    <BrowserRouter>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/logs" element={<Logs list={list}/>}/>
-        <Route path="/wallet" element={<Main addTransaction={addTransaction}/>}/>
-      </Routes>
-    </BrowserRouter>
+    <div className="Flex">
+      <div className="welMargin">
+        <Welcome />
+      </div>
+      <div className="Account">
+        {/* <Accounts web3={web3} accountAddress={saveAccountAddress} /> */}
+        <form className="label1" id="myForm">
+        <label htmlFor="">Select an account</label>
+        <select className="innerBox" id="selectNumber" onChange={selectAccount}>
+          <option></option>
+        </select>
+      </form>
+      <span className="conAc">Connected Account: {account}</span>
+      <br></br>
+      <span className="acBal">Account Balance:{accountBalance} ether</span>
+      <br></br>
+      <span className="provider">Provider : {provider}</span>
+      </div>
 
+      <div>
+        {/* <SendEther web3={web3} account={account} /> */}
+        <form className="box" onSubmit={sendEther}>
+        <p className="label">
+          <label htmlFor="">Enter Receiver's Address</label>
+          <input className="receiver" type="text" id="to"></input>
+        </p>
+
+        <p className="label">
+          <label htmlFor="">Enter Amount to Send (Ether)</label>
+          <input className="receiver" type="text" id="value" ></input>
+        </p>
+        <button className="btn" type="submit">Send</button>
+      </form>
+      <div className="box">
+        <pre className="json">
+          <h3>(Json Response)</h3>
+          <code >
+            {toggle &&
+              JSON.stringify(
+                receipt,
+                ["transactionHash", "blockHash", "blockNumber", "gasUsed"],
+                2
+              )}
+          </code>
+        </pre>
+      </div>
+      </div>
+    </div>
+
+    
     </>
   );
 };
-export default App;
+export default Main;

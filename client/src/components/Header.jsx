@@ -1,9 +1,18 @@
-import React from 'react'
+import React from 'react';
+import {Link} from 'react-router-dom';
 
 function Header() {
+    let myStyle = {
+        backgroundColor:"white",
+        textDecoration:"none"
+    }
   return (
     <>
-        <Link to="/logs">Logs</Link>
+        <div style={myStyle}>
+            <Link to="/">Home</Link>
+            <Link to="/wallet">Wallet</Link>
+            <Link to="/logs">Logs</Link>
+        </div>
     </>
   )
 }
